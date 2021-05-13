@@ -1,5 +1,6 @@
-function Block(x, y, type) {
+function Block(x, y, wall) {
     this.x = x;
     this.y = y;
-    this.type = type;
+    this.wall = wall;
+    this.neighbors = [];
 }

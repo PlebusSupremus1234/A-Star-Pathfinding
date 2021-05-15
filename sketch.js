@@ -17,15 +17,22 @@ let grid = [];
 
 let gridW = Math.max(...map.map(i => i.length));
 let gridH = map.length;
+let gridMW = 800;
+let gridMH  = 800;
 let gridS = 50;
 let path = [];
 let start, end;
 let openlist = [];
 let closedlist = [];
 
+let paused = true;
+let finished = false;
+
 function setup() {
     frameRate(10);
-    createCanvas(gridW * gridS, gridH * gridS);
+    if (gridW * gridS > gridMW) gridS = Math.floor(gridMW / gridW);
+    if (gridH * gridS > gridMH) gridS = Math.floor(gridMH / gridH);
+    createCanvas(gridW * gridS + 450, gridH * gridS);
     for (let i = 0; i < gridH; i++) {
         let row = [];
         for (let j = 0; j < gridW; j++) {
@@ -58,6 +65,8 @@ function setup() {
 }
 
 function draw() {
+    background("#ebebeb");
+    stroke(0);
     for (let i = 0; i < gridH; i++) {
         for (let j = 0; j < gridW; j++) {
             if (grid[i][j].wall) fill(0);
@@ -71,10 +80,9 @@ function draw() {
     
     let mins = openlist.filter(a => a.f === Math.min(...openlist.map(b => b.f)));
     let current = mins[mins.findIndex(a => a.h === Math.min(...mins.map(b => b.h)))];
-    console.log(current.x, current.y, current.f, current.g, current.h);
     fill("#278fb5")
-    rect(current.x * 50, current.y * 50, 50, 50);
-    if (current.x === end.x && current.y === end.y) {
+    rect(current.x * gridS, current.y * gridS, gridS, gridS);
+    if (current.x === end.x && current.y === end.y && path.length === 0) {
         path = [];
         let i = current;
         path.push(i);
@@ -82,7 +90,9 @@ function draw() {
             path.push(i.parent);
             i = i.parent;
         }
-    } else {
+        finished = true;
+    }
+    if (!paused && !finished) {
         openlist.splice(openlist.findIndex(a => a.x === current.x && a.y === current.y), 1);
         closedlist.push(current);
         for (let i = 0; i < current.neighbors.length; i++) {
@@ -103,4 +113,17 @@ function draw() {
             }
         }
     }
+
+    fill(0);
+    textSize(40);
+    textStyle(BOLD);
+    noStroke();
+    text("A* Pathfinding", gridW * gridS + 15, 50);
+    textSize(30);
+}
+
+function playpause() {
+    let element = document.getElementById("playpause");
+    element.classList.toggle("paused");
+    paused = !paused;
 }

@@ -1,10 +1,14 @@
 #playpause {
     border: 0;
+    transform: scale(0.5);
+    left: 1015px;
+    top: 51px;
     background: transparent;
+    position: absolute;
     box-sizing: border-box;
     width: 0;
     height: 74px;  
-    border-color: transparent transparent transparent #202020;
+    border-color: transparent transparent transparent black;
     transition: 100ms all ease;
     cursor: pointer;
     border-style: solid;
@@ -16,6 +20,34 @@
     }
   
     &:hover {
-        border-color: transparent transparent transparent #404040;
+        border-color: transparent transparent transparent black;
     }
+}
+
+.checkboxes {
+    position: absolute;
+    cursor: pointer;
+    height: 28px;
+    width: 28px;
+    background-color: #eee;
+}
+
+.checkboxes:hover {
+    background-color: #ccc;
+}
+
+.checkboxes:checked {
+    background-color: #2196F3;
+}
+
+.checkboxes:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }

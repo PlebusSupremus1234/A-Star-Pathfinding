@@ -1,9 +1,7 @@
 let grid = [];
-let gridW;
-let gridH;
-let gridMW = 800;
-let gridMH  = 800;
-let gridS = 50;
+let gridW = 20;
+let gridH = 20;
+let gridS = 40;
 let path = [];
 let start, end;
 let openlist = [];
@@ -16,9 +14,7 @@ let btn;
 
 /*
     Stuff to do:
-    - Fix positional bugs
     - Make speed slider work
-    - Add a restart button below the play and pause
     - Case when there's no possible paths
 */
 

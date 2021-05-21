@@ -38,9 +38,6 @@ function mazeSetup(newGrid, startB = null, endB = null) {
         }
     }
 
-    if (gridW * gridS > gridMW) gridS = Math.floor(gridMW / gridW);
-    if (gridH * gridS > gridMH) gridS = Math.floor(gridMH / gridH);
-
     openlist.push(start);
 
     resizeCanvas(gridW * gridS + 450, gridH * gridS);

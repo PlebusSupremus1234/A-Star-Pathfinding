@@ -1,13 +1,13 @@
 #playpause {
 	border: 0;
 	-webkit-transform: scale(0.5);
-	transform: scale(0.5);
-	left: 1015px;
+			transform: scale(0.5);
+	left: 1025px;
 	top: 51px;
 	background: transparent;
 	position: absolute;
 	-webkit-box-sizing: border-box;
-    box-sizing: border-box;
+			box-sizing: border-box;
 	width: 0;
 	height: 74px;
 	border-color: transparent transparent transparent black;
@@ -27,29 +27,47 @@
 	border-color: transparent transparent transparent black;
 }
 
-.checkboxes {
+#restart {
 	position: absolute;
+	color: black;
+	font-size: 37px;
+	left: 950px;
+	top: 110px;
+	-webkit-transition: -webkit-transform 0.3s;
+	transition: -webkit-transform 0.3s;
+	transition: transform 0.3s;
+	transition: transform 0.3s, -webkit-transform 0.3s;
+	-webkit-animation-fill-mode: backwards;
+			animation-fill-mode: backwards;
+}
+
+#restart:hover {
 	cursor: pointer;
-	height: 28px;
-	width: 28px;
-	background-color: #eee;
 }
 
-.checkboxes:hover {
-	background-color: #ccc;
+#restart.clicked {
+	-webkit-animation: rotate 0.8s;
+    		animation: rotate 0.8s;
 }
 
-.checkboxes:checked {
-	background-color: #2196F3;
+@-webkit-keyframes rotate {
+	from {
+		-webkit-transform: rotate(0deg);
+				transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+				transform: rotate(360deg);
+	}
 }
 
-.checkboxes:after {
-	left: 9px;
-	top: 5px;
-	width: 5px;
-	height: 10px;
-	border: solid white;
-	border-width: 0 3px 3px 0;
-	-webkit-transform: rotate(45deg);
-	transform: rotate(45deg);
+@keyframes rotate {
+	from {
+		-webkit-transform: rotate(0deg);
+				transform: rotate(0deg);
+	}
+	to {
+		-webkit-transform: rotate(360deg);
+				transform: rotate(360deg);
+	}
 }

@@ -1,20 +1,4 @@
-let map = [
-    "2                 ",
-    "1111111111111 1111",
-    "                  ",
-    "        1111111   ",
-    "          1       ",
-    "111111       11   ",
-    "       11111111111",
-    "                 3",
-];
 let grid = [];
-/*
-1 = wall
-2 = start
-3 = end
-*/
-
 let gridW;
 let gridH;
 let gridMW = 800;
@@ -27,69 +11,25 @@ let closedlist = [];
 
 let paused = true;
 let finished = false;
-let editing = false;
-
 let speedslider;
 let btn;
 
-function mazeSetup(newGrid) {
-    grid = [];
-    path = [];
-    openlist = [];
-    closedlist = [];
-    start = null;
-    end = null;
-    paused = true;
-    finished = false;
-
-    gridW = Math.max(...newGrid.map(i => i.length));
-    gridH = newGrid.length;
-    for (let i = 0; i < gridH; i++) {
-        let row = [];
-        for (let j = 0; j < gridW; j++) {
-            row.push(new Block(j, i, newGrid[i][j] == 1));
-            if (newGrid[i][j] == 2) start = row[j];
-            if (newGrid[i][j] == 3) end = row[j];
-        }
-        grid.push(row);
-    }
-
-    for (let i = 0; i < gridH; i++) {
-        for (let j = 0; j < gridW; j++) {
-            let { x, y } = grid[i][j];
-            const sameblock = (e, f) => e === y && f === x;
-            for (let a = -1; a < 2; a++) {
-                for (let b = -1; b < 2; b++) {
-                    let c = y + a;
-                    let d = x + b;
-                    if (grid[c] && grid[c][d] && !sameblock(c, d)) grid[i][j].neighbors.push(grid[c][d]);
-                }
-            }
-            
-            grid[i][j].g = dist(start.x, start.y, j, i);
-            grid[i][j].h = dist(end.x, end.y, j, i);
-            grid[i][j].f = grid[i][j].g + grid[i][j].h;
-        }
-    }
-
-    if (gridW * gridS > gridMW) gridS = Math.floor(gridMW / gridW);
-    if (gridH * gridS > gridMH) gridS = Math.floor(gridMH / gridH);
-
-    openlist.push(start);
-
-    resizeCanvas(gridW * gridS + 450, gridH * gridS);
-}
-
-//FIX POSITIONAL BUGS
+/*
+    Stuff to do:
+    - Fix positional bugs
+    - Make speed slider work
+    - Add a restart button below the play and pause
+    - Case when there's no possible paths
+*/
 
 function setup() {
     frameRate(10);
     createCanvas(400, 400);
-    mazeSetup(map.map(i => i === " " ? "0" : i));
+    mazeSetup(generateMaze().map(i => i.join("")));
     speedslider = createSlider(5, 100, 20);
-    speedslider.position(gridW * gridS + 135, 118);
+    speedslider.position(gridW * gridS + 135, 158);
     speedslider.style("width", "250px");
-    btn = { x: gridW * gridS + 15, y: 190, width: 230, height: 40 };
+    btn = { x: gridW * gridS + 15, y: 190, width: 270, height: 40 };
 }
 
 function draw() {
@@ -149,88 +89,17 @@ function draw() {
     text("A* Pathfinding", gridW * gridS + 15, 50);
     textSize(30);
     text("Play or Pause:", gridW * gridS + 15, 90);
-    text("Speed:", gridW * gridS + 15, 130);
-    text("Edit Maze:", gridW * gridS + 15, 170);
-
-    if (editing) {
-        fill("#00a2ff");
-        if (mouseX > btn.x && mouseX < btn.x + btn.width && mouseY > btn.y && mouseY < btn.y + btn.height) fill("#0092e6");
-        rect(btn.x, btn.y, btn.width, btn.height, 10, 10, 10, 10);
-        fill(255);
-        textSize(18);
-        textStyle(NORMAL);
-        text("Generate Random Maze", btn.x + 18, btn.y + 26);
-    }
+    text("Restart:", gridW * gridS + 15, 130);
+    text("Speed:", gridW * gridS + 15, 170);
+    fill("#00a2ff");
+    if (mouseX > btn.x && mouseX < btn.x + btn.width && mouseY > btn.y && mouseY < btn.y + btn.height) fill("#0092e6");
+    rect(btn.x, btn.y, btn.width, btn.height, 10, 10, 10, 10);
+    fill(255);
+    textSize(18);
+    textStyle(NORMAL);
+    text("Generate New Random Maze", btn.x + 18, btn.y + 26);
 }
 
 function mousePressed() {
-    if (mouseX > btn.x && mouseX < btn.x + btn.width && mouseY > btn.y && mouseY < btn.y + btn.height) {
-        let size = 20;
-        let maze = [];
-        for (let i = 0; i < size; i++) {
-            maze[i] = [];
-            for (let j = 0; j < size; j++) maze[i][j] = 0;
-        }
-        const r = (min, max) => Math.floor(Math.random() * (max - min)) + min;
-
-        function addBorder() {
-            for (let i = 0; i < maze.length; i++) {
-                if (i === 0 || i === (maze.length - 1)) {
-                    for (let j = 0; j < maze.length; j++) maze[i][j] = 1;
-                } else {
-                    maze[i][0] = 1;
-                    maze[i][maze.length - 1] = 1;
-                }
-            }
-        }
-        
-        addBorder();
-        partition(true, 1, maze.length - 2, 1, maze.length - 2);
-        addBorder();
-        maze[maze.length - 1][r(1, maze.length - 1)] = 2;
-        maze[0][r(1, maze.length - 1)] = 3;
-
-        function partition(h, minX, maxX, minY, maxY) {
-            if (h) {        
-                if (maxX - minX < 2) return;        
-                let y = Math.floor(r(minY, maxY) / 2) * 2;
-                let hole = Math.floor(r(minX, maxX) / 2) * 2 + 1;
-                for (let i = minX; i < maxX + 1; i++) {
-                    if (i === hole) maze[y][i] = 0;
-                    else maze[y][i] = 1;
-                } 
-                partition(!h, minX, maxX, minY, y-1);
-                partition(!h, minX, maxX, y + 1, maxY);
-            } else {
-                if (maxY - minY < 2) return;
-                let x = Math.floor(r(minX, maxX) / 2) * 2;
-                let hole = Math.floor(r(minY, maxY) / 2) * 2 + 1;
-                for (let i = minY; i <= maxY; i++) {
-                    if (i === hole) maze[i][x] = 0;
-                    else maze[i][x] = 1;
-                }
-                partition(!h, minX, x - 1, minY, maxY);
-                partition(!h, x + 1, maxX, minY, maxY);
-            }
-        }
-
-        mazeSetup(maze.map(i => i.join("")));
-    }
-}
-
-function playpause() {
-    let element = document.getElementById("playpause");
-    element.classList.toggle("paused");
-    paused = !paused;
-}
-
-function enableEditing() {
-    editing = !editing;
-    if (editing && !paused) playpause();
-}
-
-window.onload = function() {
-    let checkbox = document.getElementsByClassName("checkboxes")[0];
-    checkbox.style.left = `${gridW * gridS + 180}px`;
-    checkbox.style.top = "152px";
+    if (mouseX > btn.x && mouseX < btn.x + btn.width && mouseY > btn.y && mouseY < btn.y + btn.height) mazeSetup(generateMaze().map(i => i.join("")));
 }

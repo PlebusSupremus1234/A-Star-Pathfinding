@@ -9,20 +9,21 @@ let closedlist = [];
 
 let paused = true;
 let finished = false;
+let frameR = 10;
+
 let speedslider;
 let btn;
 
 /*
     Stuff to do:
-    - Make speed slider work
     - Case when there's no possible paths
 */
 
 function setup() {
-    frameRate(10);
+    frameRate(frameR);
     createCanvas(400, 400);
     mazeSetup(generateMaze().map(i => i.join("")));
-    speedslider = createSlider(5, 100, 20);
+    speedslider = createSlider(1, 40, frameR);
     speedslider.position(gridW * gridS + 135, 158);
     speedslider.style("width", "250px");
     btn = { x: gridW * gridS + 15, y: 190, width: 270, height: 40 };
@@ -94,6 +95,8 @@ function draw() {
     textSize(18);
     textStyle(NORMAL);
     text("Generate New Random Maze", btn.x + 18, btn.y + 26);
+
+    if (speedslider.value() !== frameR) frameRate(speedslider.value());
 }
 
 function mousePressed() {

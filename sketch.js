@@ -58,6 +58,7 @@ function draw() {
         }
         finished = true;
     }
+    
     if (!paused && !finished) {
         openlist.splice(openlist.findIndex(a => a.x === current.x && a.y === current.y), 1);
         closedlist.push(current);

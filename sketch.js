@@ -125,6 +125,10 @@ function draw() {
     textSize(24);
     text("Wall blocks", gridW * gridS + 65, 517);
 
+    textSize(33);
+    textStyle(BOLD);
+    text("Links:", gridW * gridS + 15, 580);
+
     if (slider.value() !== frameR) frameRate(slider.value());
 }
 

@@ -52,3 +52,36 @@
 		transform: rotate(360deg);
 	}
 }
+
+#links {	
+	position: absolute;
+	top: 600px;
+	left: 825px; //(gridW * gridS + 15) + 10 padding
+	
+	& a {
+		color: rgb(0, 125, 209);
+		font-family: sans-serif;
+		font-size: 26px;
+		font-weight: bold;
+		text-decoration: underline;
+		transition: all 0.2s;
+
+		&:hover {
+			color: rgb(0, 109, 182);
+		}
+	}
+}
+
+#footer {
+	position: absolute;
+	top: 760px;
+	left: 825px;
+	font-family: sans-serif;
+	font-weight: bold;
+	font-size: 19px;
+
+	& a {
+		text-decoration: none;
+		color: rgb(0, 125, 209);
+	}
+}

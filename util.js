@@ -104,8 +104,10 @@ function playpause() {
 
 function restart() {
     let element = document.getElementById("restart");
-    element.classList.toggle("clicked");
-    setTimeout(() => element.classList.toggle("clicked"), 1000);
+    if (!element.classList.contains("clicked")) {
+        element.classList.toggle("clicked");
+        setTimeout(() => element.classList.toggle("clicked"), 800);
 
-    mazeSetup(grid.map(a => a.map(b => b.wall ? "1" : "0").join("")), start, end);
+        mazeSetup(grid.map(a => a.map(b => b.wall ? "1" : "0").join("")), start, end);
+    }
 }

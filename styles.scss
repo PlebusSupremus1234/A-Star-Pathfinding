@@ -32,6 +32,7 @@
 	top: 110px;
 	transition: transform 0.3s;
 	animation-fill-mode: backwards;
+	user-select: none;
 
 	&:hover {
 		cursor: pointer;

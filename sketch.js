@@ -9,9 +9,10 @@ let closedlist = [];
 
 let paused = true;
 let finished = false;
+let editing = false;
 let frameR = 10;
 
-let speedslider;
+let slider;
 let btn;
 
 /*
@@ -23,9 +24,9 @@ function setup() {
     frameRate(frameR);
     createCanvas(400, 400);
     mazeSetup(generateMaze().map(i => i.join("")));
-    speedslider = createSlider(1, 40, frameR);
-    speedslider.position(gridW * gridS + 135, 158);
-    speedslider.style("width", "250px");
+    slider = createSlider(1, 40, frameR);
+    slider.position(gridW * gridS + 135, 158);
+    slider.style("width", "250px");
     btn = { x: gridW * gridS + 15, y: 190, width: 270, height: 40 };
 }
 
@@ -96,7 +97,35 @@ function draw() {
     textStyle(NORMAL);
     text("Generate New Random Maze", btn.x + 18, btn.y + 26);
 
-    if (speedslider.value() !== frameR) frameRate(speedslider.value());
+    fill(0);
+    textSize(33);
+    textStyle(BOLD);
+    text("Key:", gridW * gridS + 15, 290);
+
+    stroke(0);
+    fill("#278fb5");
+    rect(gridW * gridS + 15, 310, gridS, gridS);
+
+    fill("#61b001");
+    rect(gridW * gridS + 15, 370, gridS, gridS);
+
+    fill("#f20f01");
+    rect(gridW * gridS + 15, 430, gridS, gridS);
+
+    fill(0);
+    rect(gridW * gridS + 15, 490, gridS, gridS);
+
+    fill(0);
+    noStroke();
+    textSize(24);
+    text("Start block, End block,\nCurrent block and Final Path", gridW * gridS + 65, 323);
+    textSize(22);
+    text("Generated blocks (Nodes that were\nneighbors of expanded blocks)", gridW * gridS + 65, 383);
+    text("Expanded blocks (Nodes that have\nalready been searched)", gridW * gridS + 65, 443);
+    textSize(24);
+    text("Wall blocks", gridW * gridS + 65, 517);
+
+    if (slider.value() !== frameR) frameRate(slider.value());
 }
 
 function mousePressed() {

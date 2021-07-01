@@ -3,4 +3,4 @@ A demo of the A* Pathfinding algorithm to find the shortest path from one point 
 
 Demo: https://plebussupremus1234.github.io/A-Star-Pathfinding/
 
-<img src="https://media.discordapp.net/attachments/758953169194582039/845576470373597204/unknown.png?width=1041&height=660" style="float: left;" width="700">
+<img src="https://camo.githubusercontent.com/87156d4a2cc99bfc17d9bdd53806492c450ee29ae0b687c8914bdb639c35b428/68747470733a2f2f6d656469612e646973636f72646170702e6e65742f6174746163686d656e74732f3735383935333136393139343538323033392f3834353537363437303337333539373230342f756e6b6e6f776e2e706e673f77696474683d31303431266865696768743d363630" style="float: left;" width="700">
